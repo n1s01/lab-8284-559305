@@ -1,3 +1,14 @@
-#!/usr/bin/env python3# Lazy load heavy module\nimport importlib\nheavy_module = None\n\ndef get_heavy_module():\n    global heavy_module\n    if heavy_module is None:\n        heavy_module = importlib.import_module(\"heavy_module\")\n    return heavy_module
+#!/usr/bin/env python3
 
-print("Hello, World!")
+import traceback
+import sys
+
+def main():
+    print("Hello, World!")
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception:
+        traceback.print_exc()
+        sys.exit(1)
