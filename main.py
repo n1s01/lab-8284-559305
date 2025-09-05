@@ -5,13 +5,25 @@ import sys
 import secrets
 import mimetypes
 import os
+import logging
+
+# Configure audit logger
+logger = logging.getLogger('audit')
+logger.setLevel(logging.INFO)
+handler = logging.FileHandler('audit.log')
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+if not logger.handlers:
+    logger.addHandler(handler)
 
 MAX_UPLOAD_SIZE = 5 * 1024 * 1024  # 5 MB
 ALLOWED_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.gif', '.pdf'}
 
 def generate_token(length=32):
     """Generate a secure random token of the given byte length and return it as a hex string."""
-    return secrets.token_hex(length)
+    token = secrets.token_hex(length)
+    logger.info(f"Generated token of length {length}")
+    return token
 
 def validate_file_upload(file_path):
     """Validate uploaded file based on size and allowed extensions.
@@ -29,7 +41,7 @@ def validate_file_upload(file_path):
     size = os.path.getsize(file_path)
     if size > MAX_UPLOAD_SIZE:
         raise ValueError(f"File size {size} exceeds maximum allowed {MAX_UPLOAD_SIZE} bytes.")
-    # Additional MIME type checks can be added here using mimetypes if needed.
+    logger.info(f"File validated successfully: {file_path}")
     return True
 
 def main():
