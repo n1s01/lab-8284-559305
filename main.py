@@ -19,6 +19,25 @@ if not logger.handlers:
 MAX_UPLOAD_SIZE = 5 * 1024 * 1024  # 5 MB
 ALLOWED_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.gif', '.pdf'}
 
+# In-memory file cache
+_file_cache = {}
+
+def get_file_content(file_path):
+    """Return the contents of a file, using an in-memory cache."""
+    if file_path in _file_cache:
+        logger.info(f"Cache hit for {file_path}")
+        return _file_cache[file_path]
+    with open(file_path, "rb") as f:
+        data = f.read()
+    _file_cache[file_path] = data
+    logger.info(f"Cache store for {file_path}")
+    return data
+
+def clear_file_cache():
+    """Clear the in-memory file cache."""
+    _file_cache.clear()
+    logger.info("File cache cleared")
+
 def generate_token(length=32):
     """Generate a secure random token of the given byte length and return it as a hex string."""
     token = secrets.token_hex(length)
@@ -49,6 +68,9 @@ def main():
     print(f"Generated token: {token}")
     # Example placeholder for file validation:
     # validate_file_upload('path/to/uploaded_file.ext')
+    # Example placeholder for using cache:
+    # content = get_file_content('path/to/file.txt')
+    # print(content)
 
 if __name__ == "__main__":
     try:
