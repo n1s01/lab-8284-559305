@@ -6,6 +6,7 @@ import secrets
 import mimetypes
 import os
 import logging
+from constants import MAX_UPLOAD_SIZE, ALLOWED_EXTENSIONS
 
 # Configure audit logger
 logger = logging.getLogger('audit')
@@ -15,9 +16,6 @@ formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 if not logger.handlers:
     logger.addHandler(handler)
-
-MAX_UPLOAD_SIZE = 5 * 1024 * 1024  # 5 MB
-ALLOWED_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.gif', '.pdf'}
 
 # In-memory file cache
 _file_cache = {}
