@@ -5,13 +5,13 @@ import sys
 import secrets
 import mimetypes
 import os
-import logging
+import loggingfrom logging.handlers import RotatingFileHandler
 from constants import MAX_UPLOAD_SIZE, ALLOWED_EXTENSIONS
 
 # Configure audit logger
 logger = logging.getLogger('audit')
 logger.setLevel(logging.INFO)
-handler = logging.FileHandler('audit.log')
+handler = RotatingFileHandler('audit.log', maxBytes=5*1024*1024, backupCount=5)
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 if not logger.handlers:
