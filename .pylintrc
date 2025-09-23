@@ -1,0 +1,9 @@
+[MASTER]
+ignore=tests
+
+[MESSAGES CONTROL]
+# Disable some messages that are too noisy for a small project
+disable=missing-docstring,invalid-name,too-few-public-methods
+
+[FORMAT]
+max-line-length=120
