@@ -6,7 +6,8 @@ from health_check import start_health_server
 import secrets
 import mimetypes
 import os
-import loggingfrom logging.handlers import RotatingFileHandler
+import logging
+from logging.handlers import RotatingFileHandler
 from rbac import has_permission
 from constants import MAX_UPLOAD_SIZE, ALLOWED_EXTENSIONS
 
@@ -39,8 +40,14 @@ def clear_file_cache():
     logger.info("File cache cleared")
 
 def generate_token(length=32):
+    token = secrets.token_hex(length)
+    logger.info(f"Generated token of length {length}")
+    return token
 
 def enforce_permission(role, action):
+    """Enforce RBAC permission, raising PermissionError if not allowed."""
+    if not has_permission(role, action):
+        raise PermissionError(f"Role '{role}' does not have permission for '{action}'.")
     """Enforce RBAC permission, raising PermissionError if not allowed."""
     if not has_permission(role, action):
         raise PermissionError(f"Role '{role}' does not have permission for '{action}'.")
